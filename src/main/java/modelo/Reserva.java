@@ -28,6 +28,14 @@ public class Reserva {
         this.nro_habitacion = nro_habitacion;
     }
 
+    public Reserva(Timestamp fecha_entrada, Timestamp fecha_salida, String cedula, int nro_habitacion) {
+        this.fecha_entrada = fecha_entrada;
+        this.fecha_salida = fecha_salida;
+        this.cedula = cedula;
+        this.nro_habitacion = nro_habitacion;
+    }
+    
+
     public int getNro() {
         return nro;
     }

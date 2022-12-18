@@ -41,7 +41,7 @@ public class ClienteDAO {
                 lista.add(c);                
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error listaClientes: "+ex.getMessage());
         }finally{
             con.cerrarConexion();
         }
@@ -54,11 +54,12 @@ public class ClienteDAO {
         ArrayList<String> telefonos=new ArrayList();
         int idNac=0;
         String sql1="select * from nacionalidad where nacionalidad=?;";
-        String sql2="inserte into cliente values(?,?,?);";
+        String sql2="insert into cliente values(?,?,?);";
         String sql3;
         cn=con.getCnn();
         try {
             ps=cn.prepareStatement(sql1);
+            ps.setString(1, c.getNacionalidad());
             rs=ps.executeQuery();
             if(rs.next()){
                 idNac=rs.getInt(1);
@@ -71,7 +72,7 @@ public class ClienteDAO {
             ps.execute();
             
             for(int i=0 ; i<c.getTelefono().size() ; i++){
-                sql3="inserte into telefono values(?,?);";
+                sql3="insert into telefono values(?,?);";
                 ps=cn.prepareStatement(sql3);
                 ps.setString(1, c.getCedula());
                 ps.setString(2, c.getTelefono().get(i));
@@ -80,7 +81,7 @@ public class ClienteDAO {
             
             
         } catch (SQLException ex) {
-            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error nuevoClientes: "+ex.getMessage());
         }finally{
             con.cerrarConexion();
         }
@@ -100,7 +101,7 @@ public class ClienteDAO {
                 lista.add(rs1.getString(2));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);         
+            System.out.println("Error listatelefonos: "+ex.getMessage());       
         }
         
         return lista;
@@ -117,7 +118,7 @@ public class ClienteDAO {
                 res=rs1.getString(2);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);         
+            System.out.println("Error traerNacionalidad: "+ex.getMessage());         
         }        
         return res;
     }
@@ -133,7 +134,7 @@ public class ClienteDAO {
                 lista.add(rs.getString(2));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);         
+            System.out.println("Error traerListaNacionalidad: "+ex.getMessage());            
         }finally{
             con.cerrarConexion();
         }        

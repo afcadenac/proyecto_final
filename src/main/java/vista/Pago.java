@@ -4,6 +4,11 @@
  */
 package vista;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
 /**
  *
  * @author user
@@ -28,7 +33,7 @@ public class Pago extends javax.swing.JFrame {
 
         listaMetodos = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        txtCuotas = new javax.swing.JTextField();
+        txtAbono = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnConfirmar = new javax.swing.JButton();
         lblValorFinal = new javax.swing.JLabel();
@@ -56,7 +61,7 @@ public class Pago extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtCuotas, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtAbono, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
@@ -74,7 +79,7 @@ public class Pago extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCuotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAbono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(36, 36, 36)
                 .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -119,12 +124,44 @@ public class Pago extends javax.swing.JFrame {
         });
     }
 
+    public JButton getBtnConfirmar() {
+        return btnConfirmar;
+    }
+
+    public void setBtnConfirmar(JButton btnConfirmar) {
+        this.btnConfirmar = btnConfirmar;
+    }
+
+    public JLabel getLblValorFinal() {
+        return lblValorFinal;
+    }
+
+    public void setLblValorFinal(JLabel lblValorFinal) {
+        this.lblValorFinal = lblValorFinal;
+    }
+
+    public JComboBox<String> getListaMetodos() {
+        return listaMetodos;
+    }
+
+    public void setListaMetodos(JComboBox<String> listaMetodos) {
+        this.listaMetodos = listaMetodos;
+    }
+
+    public JTextField getTxtAbono() {
+        return txtAbono;
+    }
+
+    public void setTxtAbono(JTextField txtAbono) {
+        this.txtAbono = txtAbono;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblValorFinal;
     private javax.swing.JComboBox<String> listaMetodos;
-    private javax.swing.JTextField txtCuotas;
+    private javax.swing.JTextField txtAbono;
     // End of variables declaration//GEN-END:variables
 }
