@@ -37,7 +37,7 @@ public class ReservaDAO {
             ps.setString(3, r.getCedula());
             ps.execute();
             
-            int n=traerIdReserva(r);
+            int n=traerIdReserva();
             System.out.println(n);
             ps=cn.prepareStatement(sql2);
             ps.setInt(1, n);
@@ -53,7 +53,7 @@ public class ReservaDAO {
         }
     }
     
-    public int traerIdReserva(Reserva r){
+    public int traerIdReserva(){
         String sql5="select max(nro_reserva) from reservacion;";
         int res=0;
         try {
@@ -90,18 +90,19 @@ public class ReservaDAO {
     }
     
     public void nuevoComprobantePago(Comprobante_pago c){
-        sql="insert into Comprobante_pago(nro_reserva,id_medio_pago,valor) values(?,1,63465);";
+        String sql8="insert into Comprobante_pago(nro_reserva,id_medio_pago,valor) values(?,?,?);";
         cn=con.getCnn();
         int idmedio=traerIdMetodoPago(c.getMedio_pago());
+        int idreserva=traerIdReserva();
         System.out.println("este es el id :) "+idmedio);
         try {
-            ps=cn.prepareStatement(sql);
+            ps=cn.prepareStatement(sql8);
             System.out.println("1");
-            ps.setInt(1, c.getNro_reserva());
+            ps.setInt(1, idreserva);
             System.out.println("2");
-            //ps.setInt(2, idmedio);//______________________________________________________________________
+            ps.setInt(2, idmedio);//______________________________________________________________________
             System.out.println("3");
-            //ps.setDouble(2, c.getValor());
+            ps.setDouble(3, c.getValor());
             ps.execute();
         } catch (SQLException ex) {
             System.out.println("Error nuevoComprobantePago: "+ex.getMessage()); 
