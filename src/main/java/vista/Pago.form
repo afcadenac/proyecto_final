@@ -98,6 +98,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblValorFinal">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="k"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

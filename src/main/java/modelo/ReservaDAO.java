@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -144,5 +145,22 @@ public class ReservaDAO {
             con.cerrarConexion();
         }
         return lista;
+    }
+    
+    public int traerDias(Timestamp fe,Timestamp fs){
+        String sql10="select extract(days from (timestamp '2007-05-19' -timestamp '1952-04-25'))";
+        int res=0;
+        try {
+            ps=cn.prepareStatement(sql10);
+            ps.setTimestamp(1, fs);
+            ps.setTimestamp(2, fe);
+            rs=ps.executeQuery();
+            if(rs.next()){
+                res=rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("error traer dias: "+ex.getMessage());
+        }
+        return res;
     }
 }

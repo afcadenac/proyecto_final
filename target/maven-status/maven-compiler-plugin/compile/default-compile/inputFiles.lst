@@ -1,6 +1,8 @@
+C:\Users\user\Desktop\proyecto_final\src\main\java\modelo\FacturaDAO.java
 C:\Users\user\Desktop\proyecto_final\src\main\java\modelo\ReservaDAO.java
 C:\Users\user\Desktop\proyecto_final\src\main\java\controlador\Control.java
 C:\Users\user\Desktop\proyecto_final\src\main\java\modelo\ClienteDAO.java
+C:\Users\user\Desktop\proyecto_final\src\main\java\modelo\Empleado.java
 C:\Users\user\Desktop\proyecto_final\src\main\java\modelo\HabitacionDAO.java
 C:\Users\user\Desktop\proyecto_final\src\main\java\modelo\Comprobante_pago.java
 C:\Users\user\Desktop\proyecto_final\src\main\java\vista\Pago.java
@@ -10,5 +12,7 @@ C:\Users\user\Desktop\proyecto_final\src\main\java\vista\Lista_reservas.java
 C:\Users\user\Desktop\proyecto_final\src\main\java\modelo\Habitacion.java
 C:\Users\user\Desktop\proyecto_final\src\main\java\vista\Menu.java
 C:\Users\user\Desktop\proyecto_final\src\main\java\vista\Reservacion.java
+C:\Users\user\Desktop\proyecto_final\src\main\java\vista\ListaEmpleado.java
 C:\Users\user\Desktop\proyecto_final\src\main\java\principal\Ejecutar.java
+C:\Users\user\Desktop\proyecto_final\src\main\java\modelo\Factura.java
 C:\Users\user\Desktop\proyecto_final\src\main\java\modelo\Conexion.java

@@ -30,8 +30,8 @@ public class Menu extends javax.swing.JFrame {
     private void initComponents() {
 
         btnReserva = new javax.swing.JButton();
-        btnSolicitar = new javax.swing.JButton();
         btnListaReserva = new javax.swing.JButton();
+        btnEmpleado = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -42,9 +42,9 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        btnSolicitar.setText("solicitar habitacion");
-
         btnListaReserva.setText("Listas de reservas");
+
+        btnEmpleado.setText("Seleccione Empleado");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -55,18 +55,18 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(btnListaReserva)
                 .addGap(41, 41, 41)
                 .addComponent(btnReserva)
-                .addGap(38, 38, 38)
-                .addComponent(btnSolicitar)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnEmpleado)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(131, 131, 131)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSolicitar)
                     .addComponent(btnReserva)
-                    .addComponent(btnListaReserva))
+                    .addComponent(btnListaReserva)
+                    .addComponent(btnEmpleado))
                 .addContainerGap(147, Short.MAX_VALUE))
         );
 
@@ -85,20 +85,20 @@ public class Menu extends javax.swing.JFrame {
         this.btnReserva = btnReserva;
     }
 
-    public JButton getBtnSolicitar() {
-        return btnSolicitar;
-    }
-
-    public void setBtnSolicitar(JButton btnSolicitar) {
-        this.btnSolicitar = btnSolicitar;
-    }
-
     public JButton getBtnListaReserva() {
         return btnListaReserva;
     }
 
     public void setBtnListaReserva(JButton btnListaReserva) {
         this.btnListaReserva = btnListaReserva;
+    }
+
+    public JButton getBtnEmpleado() {
+        return btnEmpleado;
+    }
+
+    public void setBtnEmpleado(JButton btnEmpleado) {
+        this.btnEmpleado = btnEmpleado;
     }
 
     /**
@@ -137,8 +137,8 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEmpleado;
     private javax.swing.JButton btnListaReserva;
     private javax.swing.JButton btnReserva;
-    private javax.swing.JButton btnSolicitar;
     // End of variables declaration//GEN-END:variables
 }

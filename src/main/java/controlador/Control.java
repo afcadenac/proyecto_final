@@ -11,15 +11,20 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import static java.util.concurrent.TimeUnit.DAYS;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelo.Cliente;
 import modelo.ClienteDAO;
 import modelo.Comprobante_pago;
+import modelo.Empleado;
+import modelo.Factura;
+import modelo.FacturaDAO;
 import modelo.Habitacion;
 import modelo.HabitacionDAO;
 import modelo.Reserva;
 import modelo.ReservaDAO;
+import vista.ListaEmpleado;
 import vista.Lista_reservas;
 import vista.Menu;
 import vista.Pago;
@@ -35,26 +40,41 @@ public class Control implements ActionListener {
     private Reservacion objReservacion;
     private Pago objpago;
     private Lista_reservas objLista_reservas;
+    private ListaEmpleado objListaEmpleado;
+    
+    
+    private Timestamp timestamp;
+    long precio_final=0;
 
-    HabitacionDAO hdao;
-    ClienteDAO cdao;
-    ReservaDAO rdao;
+    private HabitacionDAO hdao;
+    private ClienteDAO cdao;
+    private ReservaDAO rdao;
+    private FacturaDAO fdao;
 
-    Cliente c;
-    Reserva r;
-    Comprobante_pago cp;
-
-    ArrayList<Habitacion> objlistaHabitacion;
+    private Cliente c;
+    private Reserva r;
+    private Comprobante_pago cp;
+    private Factura f;
+    private Empleado em;
+    
+    private ArrayList<Empleado> objlistaEmpleado;
+    private ArrayList<Habitacion> objlistaHabitacion;
 
     public Control() {
+        objListaEmpleado= new ListaEmpleado();
+        objListaEmpleado.setVisible(false);
+        objListaEmpleado.getBtnGuardarEmpleado().addActionListener(this);
+        
         objMenu = new Menu();
         objReservacion = new Reservacion();
         objpago = new Pago();
 
         objMenu.setVisible(true);
         objMenu.getBtnReserva().addActionListener(this);
-        objMenu.getBtnSolicitar().addActionListener(this);
         objMenu.getBtnListaReserva().addActionListener(this);
+        objMenu.getBtnEmpleado().addActionListener(this);
+        objMenu.getBtnListaReserva().setEnabled(false);
+        objMenu.getBtnReserva().setEnabled(false);
 
         objReservacion.setVisible(false);
         objReservacion.getBtnActualizar().addActionListener(this);
@@ -62,6 +82,7 @@ public class Control implements ActionListener {
         objReservacion.getBtnReservar().addActionListener(this);
         objReservacion.getBtntelefono().addActionListener(this);
         objReservacion.getBtntelefono().setEnabled(false);
+        
 
         objpago.setVisible(false);
         objpago.getBtnConfirmar().addActionListener(this);
@@ -73,8 +94,13 @@ public class Control implements ActionListener {
         añadirNacionalidad();
         añadirTipo();
         añadirMetodoPago();
-        objReservacion.getTxtFechaInicio().setText(Instant.now().toString());
-
+        
+        timestamp = new Timestamp(System.currentTimeMillis());
+        objReservacion.getTxtFechaInicio().setText(timestamp.toString());
+        
+        
+        fdao=new FacturaDAO();
+        objlistaEmpleado=fdao.traerListaEmpleado();
     }
 
     public void añadirNacionalidad() {
@@ -107,9 +133,38 @@ public class Control implements ActionListener {
             objpago.getListaMetodos().addItem(n.get(i));
         }
     }
+    
+    public void añadirIdEmpleado(ArrayList<Empleado> l) {
+        for (int i = 0; i < l.size(); i++) {
+            objListaEmpleado.getListaIdEmpleado().addItem(l.get(i).getId()+"");
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==objMenu.getBtnEmpleado()){
+            objMenu.setVisible(false);
+            objListaEmpleado.setVisible(true);
+            
+            añadirIdEmpleado(objlistaEmpleado);
+            limpiarTabla(objListaEmpleado.getTablaEmpleado());
+            llenarTabla2(objListaEmpleado.getTablaEmpleado(), objlistaEmpleado);
+        }
+        
+        if(e.getSource()==objListaEmpleado.getBtnGuardarEmpleado()){
+            int id=Integer.parseInt(objListaEmpleado.getListaIdEmpleado().getSelectedItem().toString());
+            for(int i=0 ; i<objlistaEmpleado.size() ; i++){
+                if(objlistaEmpleado.get(i).getId()==id){
+                    em=objlistaEmpleado.get(i);
+                    break;
+                }
+            }
+            objMenu.getBtnListaReserva().setEnabled(true);
+            objMenu.getBtnReserva().setEnabled(true);
+            objListaEmpleado.setVisible(false);
+            objMenu.setVisible(true);
+        }
+        
         if (e.getSource() == objMenu.getBtnReserva()) {
             objMenu.setVisible(false);
             objReservacion.setVisible(true);
@@ -126,8 +181,17 @@ public class Control implements ActionListener {
             limpiarTabla(objLista_reservas.getTablaReservas());
             llenarTabla5(objLista_reservas.getTablaReservas(), rdao.traerListaReserva());
         }
-
+        
         if (e.getSource() == objReservacion.getBtnGuardar()) {
+            c = new Cliente(objReservacion.getTxtCedula().getText(), objReservacion.getTxtNombre().getText(), objReservacion.getListaNacionalidad().getSelectedItem().toString());
+            ArrayList<String> tel = new ArrayList();
+            tel.add(objReservacion.getTxtTelefono().getText());
+            c.setTelefono(tel);
+            objReservacion.getBtnGuardar().setEnabled(false);
+            objReservacion.getBtntelefono().setEnabled(true);
+        }
+
+        if (e.getSource() == objListaEmpleado.getBtnGuardarEmpleado()) {
             c = new Cliente(objReservacion.getTxtCedula().getText(), objReservacion.getTxtNombre().getText(), objReservacion.getListaNacionalidad().getSelectedItem().toString());
             ArrayList<String> tel = new ArrayList();
             tel.add(objReservacion.getTxtTelefono().getText());
@@ -223,20 +287,52 @@ public class Control implements ActionListener {
             LocalDateTime dateTime2 = LocalDateTime.parse(objReservacion.getTxtFechaInicio().getText(), formatter);
             Timestamp entrada = Timestamp.valueOf(dateTime2);
             
-            r=new Reserva(entrada, salida, c.getCedula(), Integer.parseInt(objReservacion.getListaId().getSelectedItem().toString()));
             rdao=new ReservaDAO();
-            cdao=new ClienteDAO();
-            cdao.nuevoClientes(c);
-            rdao.nuevaReservacion(r);
+                    
+                    
+            long startTime = entrada.getTime();
+            long endTime = salida.getTime();
+            long diffTime = endTime - startTime;
+            long diffDays = diffTime / (1000 * 60 * 60 * 24);
             
+            if(diffDays==0)
+                diffDays=1;
+                          
+            for(int i=0 ; i<objlistaHabitacion.size() ; i++){
+                if(objlistaHabitacion.get(i).getNro()==Integer.parseInt(objReservacion.getListaId().getSelectedItem().toString())){
+                    precio_final=diffDays*(long)objlistaHabitacion.get(i).getPrecio();
+                }
+            }
+            
+            r=new Reserva(entrada, salida, c.getCedula(), Integer.parseInt(objReservacion.getListaId().getSelectedItem().toString()));
+            
+            objpago.getLblValorFinal().setText("el valor final es: "+precio_final);
             
             objReservacion.setVisible(false);
             objpago.setVisible(true);
         }
         
         if(e.getSource()==objpago.getBtnConfirmar()){
+            
+            
+            rdao=new ReservaDAO();
+            cdao=new ClienteDAO();
+            cdao.nuevoClientes(c);
+            rdao.nuevaReservacion(r);
+            
             cp=new Comprobante_pago(r.getNro(), objpago.getListaMetodos().getSelectedItem().toString(), Double.parseDouble(objpago.getTxtAbono().getText()));
             rdao.nuevoComprobantePago(cp);
+            
+            fdao= new FacturaDAO();
+            
+            /*timestamp = new Timestamp(System.currentTimeMillis());
+            rdao=new ReservaDAO();
+            int idmetod=rdao.traerIdMetodoPago(cp.getMedio_pago());
+            rdao=new ReservaDAO();
+            int idr=rdao.traerIdReserva();
+            
+            f=new Factura(precio_final, r.getFecha_salida(), timestamp, idr, idmetod, em.getId());
+            fdao.nuevaFactura(f);*/
             
             objpago.setVisible(false);
             objMenu.setVisible(true);
@@ -278,6 +374,17 @@ public class Control implements ActionListener {
             vector[2] = l.get(i).getFecha_salida();
             vector[3] = l.get(i).getCedula();
             vector[4] = l.get(i).getNro_habitacion();
+            modelo.addRow(vector);
+        }
+
+    }
+    
+    private void llenarTabla2(JTable nuevo, ArrayList<Empleado> l) {
+        DefaultTableModel modelo = (DefaultTableModel) nuevo.getModel();
+        Object vector[] = new Object[2];
+        for (int i = 0; i < l.size(); i++) {
+            vector[0] = l.get(i).getId();
+            vector[1] = l.get(i).getNombre();
             modelo.addRow(vector);
         }
 
