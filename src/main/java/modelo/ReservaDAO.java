@@ -73,7 +73,7 @@ public class ReservaDAO {
     
     public ArrayList<Reserva> traerListaReserva(){
         ArrayList<Reserva> lista=new ArrayList();
-        sql="select * from vista_reserva;";
+        sql="select re.nro_reserva,re.fecha_entrada,re.fecha_salida,re.cedula_cliente,h.nro_habitacion from reservacion re inner join reserva_habitacion rh ON rh.nro_reserva = re.nro_reserva inner join habitacion h ON h.nro_habitacion = rh.nro_habitacion; ";
         cn=con.getCnn();
         try {
             ps=cn.prepareStatement(sql);

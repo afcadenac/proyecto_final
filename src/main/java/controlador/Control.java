@@ -20,6 +20,7 @@ import modelo.Habitacion;
 import modelo.HabitacionDAO;
 import modelo.Reserva;
 import modelo.ReservaDAO;
+import vista.Lista_reservas;
 import vista.Menu;
 import vista.Pago;
 import vista.Reservacion;
@@ -33,6 +34,7 @@ public class Control implements ActionListener {
     private Menu objMenu;
     private Reservacion objReservacion;
     private Pago objpago;
+    private Lista_reservas objLista_reservas;
 
     HabitacionDAO hdao;
     ClienteDAO cdao;
@@ -52,6 +54,7 @@ public class Control implements ActionListener {
         objMenu.setVisible(true);
         objMenu.getBtnReserva().addActionListener(this);
         objMenu.getBtnSolicitar().addActionListener(this);
+        objMenu.getBtnListaReserva().addActionListener(this);
 
         objReservacion.setVisible(false);
         objReservacion.getBtnActualizar().addActionListener(this);
@@ -62,6 +65,10 @@ public class Control implements ActionListener {
 
         objpago.setVisible(false);
         objpago.getBtnConfirmar().addActionListener(this);
+        
+        objLista_reservas=new Lista_reservas();
+        objLista_reservas.setVisible(false);
+        objLista_reservas.getBtnVolver().addActionListener(this);
 
         añadirNacionalidad();
         añadirTipo();
@@ -108,6 +115,16 @@ public class Control implements ActionListener {
             objReservacion.setVisible(true);
             objReservacion.getBtnGuardar().setEnabled(true);
             objReservacion.getBtntelefono().setEnabled(false);
+        }
+        
+        if(e.getSource()== objMenu.getBtnListaReserva()){
+            objMenu.setVisible(false);
+            objLista_reservas.setVisible(true);
+            
+            rdao=new ReservaDAO();
+            
+            limpiarTabla(objLista_reservas.getTablaReservas());
+            llenarTabla5(objLista_reservas.getTablaReservas(), rdao.traerListaReserva());
         }
 
         if (e.getSource() == objReservacion.getBtnGuardar()) {
@@ -224,6 +241,11 @@ public class Control implements ActionListener {
             objpago.setVisible(false);
             objMenu.setVisible(true);
         }
+        
+        if(e.getSource()== objLista_reservas.getBtnVolver()){
+            objLista_reservas.setVisible(false);
+            objMenu.setVisible(true);
+        }
     }
 
     private void limpiarTabla(JTable nuevo) {
@@ -242,6 +264,20 @@ public class Control implements ActionListener {
             vector[1] = l.get(i).getPrecio();
             vector[2] = l.get(i).getEstado();
             vector[3] = l.get(i).getTipo();
+            modelo.addRow(vector);
+        }
+
+    }
+    
+    private void llenarTabla5(JTable nuevo, ArrayList<Reserva> l) {
+        DefaultTableModel modelo = (DefaultTableModel) nuevo.getModel();
+        Object vector[] = new Object[5];
+        for (int i = 0; i < l.size(); i++) {
+            vector[0] = l.get(i).getNro();
+            vector[1] = l.get(i).getFecha_entrada();
+            vector[2] = l.get(i).getFecha_salida();
+            vector[3] = l.get(i).getCedula();
+            vector[4] = l.get(i).getNro_habitacion();
             modelo.addRow(vector);
         }
 

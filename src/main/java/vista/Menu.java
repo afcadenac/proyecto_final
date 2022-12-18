@@ -93,6 +93,14 @@ public class Menu extends javax.swing.JFrame {
         this.btnSolicitar = btnSolicitar;
     }
 
+    public JButton getBtnListaReserva() {
+        return btnListaReserva;
+    }
+
+    public void setBtnListaReserva(JButton btnListaReserva) {
+        this.btnListaReserva = btnListaReserva;
+    }
+
     /**
      * @param args the command line arguments
      */
